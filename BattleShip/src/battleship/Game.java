@@ -1,5 +1,6 @@
 package battleship;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,11 +9,13 @@ public class Game {
     List<Ship> ships;
     Map map;
     Draw draw;
+    ArrayList<LocationShip> location;
 
     public Game(Map map, Draw draw, List<Ship> ships) {
         this.map = map;
         this.draw = draw;
         this.ships = ships;
+        location = new ArrayList<LocationShip>();
     }
 
     public void start() {
@@ -24,17 +27,24 @@ public class Game {
 
     public void userInput() {
         int i = 0;
-        while (i < ships.size()) {
-            draw.inputRequest(ships.get(i));
+        draw.inputRequest(ships.get(i));
+        while (true) {
             String[] command = scan.nextLine().split(" ");
             if (!checkCommand(command, i))
                 continue;
             if (!map.checkPos(command)) {
-                System.out.println("\nError! You placed is too close to another one. Try again: ");
+                draw.errorMesPlaceToClose();
                 continue;
             }
             draw.printMap();
+            location.add(new LocationShip(i, ships.get(i).getLength(), map.commandToCoordinate(command)));
             i++;
+            if (i < ships.size()) {
+                draw.inputRequest(ships.get(i));
+            } else {
+                draw.mesStartGame();
+                return;
+            }
         }
     }
 
@@ -77,9 +87,9 @@ public class Game {
         }
         if (!returnValue) {
             if (num1 - num2 != 0 && letter1 - letter2 != 0) {
-                System.out.print("\nError! Wrong ship location! Try again:\n");
+                draw.errorMesWrongLocation();
             } else {
-                System.out.print("\nError! Wrong length of the Submarine! Try again:\n");
+                draw.errorMesWrongLength();
             }
         }
         return returnValue;

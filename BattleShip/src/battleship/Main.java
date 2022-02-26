@@ -1,5 +1,6 @@
 package battleship;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ public class Main {
                                     Ship.DESTROYER);
         Game game = new Game(map, draw, ships);
         game.start();
-        MakeShots fire = new MakeShots();
+        MakeShots fire = new MakeShots(game.location, map);
         fire.shooting(map);
 
     }

@@ -37,11 +37,11 @@ public class Map {
                 }
             }
         }
-        for (int i = coordinate[0]; i <= coordinate[2]; i++) {
-            for (int j = coordinate[1]; j <= coordinate[3]; j++) {
-                field[i][j] = "O";
+            for (int i = coordinate[0]; i <= coordinate[2]; i++) {
+                for (int j = coordinate[1]; j <= coordinate[3]; j++) {
+                    field[i][j] = "O";
+                }
             }
-        }
         return true;
     }
 
@@ -64,7 +64,8 @@ public class Map {
     }
 
     public boolean fire(int[] coordinate) {
-        if (field[coordinate[0]][coordinate[1]].equals("O")) {
+        if (field[coordinate[0]][coordinate[1]].equals("O") ||
+                field[coordinate[0]][coordinate[1]].equals("X")) {
             field[coordinate[0]][coordinate[1]] = "X";
             return true;
         } else {

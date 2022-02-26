@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MakeShots {
-    ArrayList<String> shortsFired = new ArrayList<>();
+    Map map;
+    ArrayList<LocationShip> location;
+    Draw print;
+
+    MakeShots(ArrayList<LocationShip> location, Map map) {
+        this.map = map;
+        this.location = location;
+        this.print = new Draw(map);
+    }
 
     public void shooting(Map map) {
-        Draw print = new Draw(map);
-        print.printMap();
-        System.out.println("\nTake a shot!\n");
+        print.printHiddenMap();
+        print.firstShot();
         boolean hit = false;
         while (!hit) {
             Scanner scan = new Scanner(System.in);
@@ -17,16 +24,31 @@ public class MakeShots {
             int[] coordinates = commandToCoordinates(command);
             if (coordinates[0] < 1 || coordinates[0] > 10 ||
                     coordinates[1] < 1 || coordinates[1] > 10) {
-                System.out.println("\nError! You entered the wrong coordinates! Try again:\n");
+                print.errorMesWrongCoordinateShot();
                 continue;
             } else {
                 if (map.fire(coordinates)) {
-                    System.out.println("\nYou hit a ship!\n");
-                    print.printMap();
-                    hit = true;
+                    print.printHiddenMap();
+                    for (int i = 0; i < location.size(); i++) {
+                        if (location.get(i).coordinate[0] <= coordinates[0] && location.get(i).coordinate[2] >= coordinates[0]
+                                && location.get(i).coordinate[1] <= coordinates[1] && location.get(i).coordinate[3] >= coordinates[1]) {
+                            location.get(i).health--;
+                            if (!location.get(i).isAlive()) {
+                                location.remove(location.get(i));
+                                if (location.isEmpty()) {
+                                    print.congratulation();
+                                    hit = true;
+                                } else {
+                                    print.findNewTarget();
+                                }
+                            } else {
+                                print.niceShot();
+                            }
+                        }
+                    }
                 } else {
-                    print.printMap();
-                    System.out.println("\nYou missed!\n");
+                    print.printHiddenMap();
+                    print.wrongShot();
                 }
             }
         }
