@@ -42,7 +42,7 @@ public class Game {
             if (i < ships.size()) {
                 draw.inputRequest(ships.get(i));
             } else {
-                draw.mesStartGame();
+//                draw.mesStartGame();
                 return;
             }
         }

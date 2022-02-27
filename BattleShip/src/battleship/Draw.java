@@ -1,12 +1,31 @@
 package battleship;
 
+import java.util.Scanner;
+
 public class Draw {
     Map map;
+    Scanner scan;
+    int player;
 
-    public Draw(Map map) {
+    public Draw(Map map, int player) {
         this.map = map;
+        this.scan = new Scanner(System.in);
+        this.player = player;
     }
 
+    public void startGameMes() {
+        System.out.println("Player " + player  + ", place your ships on the game field");
+    }
+
+    public void passTheMove() {
+        System.out.println("\nPress Enter and pass the move to another player");
+        System.out.print("...");
+        scan.nextLine();
+    }
+
+    public void playerTurn() {
+        System.out.println("\nPlayer "+ player + ", it's your turn:\n");
+    }
     public void printMap() {
         System.out.println();
         for (int i = 0; i < 11; i++) {
@@ -17,6 +36,15 @@ public class Draw {
         }
     }
 
+    public void printMapWithShoot() {
+        System.out.println("---------------------");
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                System.out.print(map.field[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
     public void inputRequest(Ship type) {
         String output = String.format("\nEnter the coordinates of the %s (%d cells):\n", type.getTitle(), type.getLength());
         System.out.println(output);
@@ -65,14 +93,23 @@ public class Draw {
     }
 
     public void findNewTarget() {
-        System.out.println("\nYou sank a ship! Specify a new target:\n");
+        System.out.println("\nYou sank a ship!");
+        System.out.println("Press Enter and pass the move to another player");
+        System.out.print("...");
+        scan.nextLine();
     }
 
     public void niceShot() {
-        System.out.println("\nYou hit a ship! Try again:\n");
+        System.out.println("\nYou hit a ship!");
+        System.out.println("Press Enter and pass the move to another player");
+        System.out.print("...");
+        scan.nextLine();
     }
 
     public void wrongShot() {
-        System.out.println("\nYou missed. Try again:\n");
+        System.out.println("\nYou missed!");
+        System.out.println("Press Enter and pass the move to another player");
+        System.out.print("...");
+        scan.nextLine();
     }
 }

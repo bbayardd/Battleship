@@ -5,18 +5,27 @@ import java.util.Scanner;
 
 public class MakeShots {
     Map map;
+    Map map2;
     ArrayList<LocationShip> location;
+//    ArrayList<LocationShip> location2;
     Draw print;
+    Draw print2;
+    boolean flag;
 
-    MakeShots(ArrayList<LocationShip> location, Map map) {
+    MakeShots(ArrayList<LocationShip> location, Map map, Map map2, int p1, int p2) {
         this.map = map;
+        this.map2 = map2;
         this.location = location;
-        this.print = new Draw(map);
+//        this.location2 = location2;
+        this.print = new Draw(map, p1);
+        this.print2 = new Draw(map2, p2);
+        this.flag = false;
     }
 
-    public void shooting(Map map) {
-        print.printHiddenMap();
-        print.firstShot();
+    public void shooting() {
+        print2.printHiddenMap();
+        print.printMapWithShoot();
+        print.playerTurn();
         boolean hit = false;
         while (!hit) {
             Scanner scan = new Scanner(System.in);
@@ -27,17 +36,19 @@ public class MakeShots {
                 print.errorMesWrongCoordinateShot();
                 continue;
             } else {
-                if (map.fire(coordinates)) {
-                    print.printHiddenMap();
+                if (map2.fire(coordinates)) {
+//                    print.printHiddenMap();
                     for (int i = 0; i < location.size(); i++) {
                         if (location.get(i).coordinate[0] <= coordinates[0] && location.get(i).coordinate[2] >= coordinates[0]
                                 && location.get(i).coordinate[1] <= coordinates[1] && location.get(i).coordinate[3] >= coordinates[1]) {
-                            location.get(i).health--;
+                            if (!map2.doubleFire) {
+                                location.get(i).health--;
+                            }
                             if (!location.get(i).isAlive()) {
                                 location.remove(location.get(i));
                                 if (location.isEmpty()) {
                                     print.congratulation();
-                                    hit = true;
+                                    flag = true;
                                 } else {
                                     print.findNewTarget();
                                 }
@@ -47,9 +58,10 @@ public class MakeShots {
                         }
                     }
                 } else {
-                    print.printHiddenMap();
+//                    print.printHiddenMap();
                     print.wrongShot();
                 }
+                hit = true;
             }
         }
     }

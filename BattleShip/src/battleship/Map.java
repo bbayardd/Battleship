@@ -2,10 +2,12 @@ package battleship;
 
 public class Map {
     String[][] field;
+    boolean doubleFire;
 
     public Map(int x, int y) {
         this.field = new String[x][y];
         initMap();
+        this.doubleFire = false;
     }
 
 
@@ -64,6 +66,11 @@ public class Map {
     }
 
     public boolean fire(int[] coordinate) {
+        if (field[coordinate[0]][coordinate[1]].equals("X")) {
+            doubleFire = true;
+        } else {
+            doubleFire = false;
+        }
         if (field[coordinate[0]][coordinate[1]].equals("O") ||
                 field[coordinate[0]][coordinate[1]].equals("X")) {
             field[coordinate[0]][coordinate[1]] = "X";
